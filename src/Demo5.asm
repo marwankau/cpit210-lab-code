@@ -1,29 +1,64 @@
 .data
-	str1:  .asciiz "x greater than 10\n"
-	str2:  .asciiz "x less than or equal 10\n"
-    x:     .word    1
+    str1:     .asciiz "Enter an integer: "
+    str_even: .asciiz " is even"
+    str_odd:  .asciiz " is odd"
+    str_zero: .asciiz " is zero"
+    x:        .word 0
 
 .globl main
 .text
 
 main:
+    li    $v0, 4
+    la    $a0, str1
+    syscall
 
-	lw	$t0, x
+    li    $v0, 5
+    syscall
+    move  $t0, $v0
+    sw    $t0, x
 
-	bgt	$t0, 10, L1
-    j	L2
-L1:	
-	li	$v0, 4
-	la	$a0, str1
-	syscall
-    j		end_if
+    beqz  $t0, if_zero
+
+    li    $t1, 2
+    div   $t0, $t1
+    mfhi  $t2
+
+    beqz  $t2, if_even
+    j     else
+if_zero:
+
+    li    $v0, 1
+    move  $a0, $t0
+    syscall
     
-L2:
-	li	$v0, 4
-	la	$a0, str2
-	syscall
+    li    $v0, 4
+    la    $a0, str_zero
+    syscall
 
+    j     end_if
 
-end_if:	
-	li	$v0, 10
-	syscall
+if_even:
+    li    $v0, 1
+    move  $a0, $t0
+    syscall
+    
+    li    $v0, 4
+    la    $a0, str_even
+    syscall
+
+    j     end_if
+else:
+    li    $v0, 1
+    move  $a0, $t0
+    syscall
+    
+    li    $v0, 4
+    la    $a0, str_odd
+    syscall
+
+end_if:
+
+    # Exit program normally
+    li  $v0, 10
+    syscall

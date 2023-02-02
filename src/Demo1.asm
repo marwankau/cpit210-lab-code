@@ -1,8 +1,8 @@
 .data
-
-	str1:  .asciiz "Hello MIPS"
-
+	str1: .asciiz "Hello, World!"
+	
 .globl main
+
 .text
 
 main:
