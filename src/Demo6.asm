@@ -61,7 +61,7 @@ loop_end:
 
     lw  $t5, sum
     div $t5, $t0
-    mfhi   $t6
+    mflo   $t6
     
     sw  $t6, avg
 
